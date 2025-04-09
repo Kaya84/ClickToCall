@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Click to call",
-  "version": "1.6",
+  "version": "1.8",
   "description": "Menu contestuale per comporre un numero di telefono dinamico",
   "permissions": ["contextMenus", "storage", "notifications", "scripting", "activeTab"],
   "background": {
@@ -17,14 +17,14 @@
   "content_scripts": [
   {
     "matches": ["*://*/*"],
-    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*"],
+    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*", "*://rovereto.jentecloud.net/*"],
     "matches": ["<all_urls>"],
     "js": ["parseAllNumbers.js"],
     "run_at": "document_idle"
   },
   {
     "matches": ["*://*/*"],
-    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*"],
+    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*", "*://rovereto.jentecloud.net/*"],
     "js": ["parseTelCallto.js"],
     "run_at": "document_idle"
   },

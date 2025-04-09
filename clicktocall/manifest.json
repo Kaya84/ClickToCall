@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "Click to Call",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Click to call del Comune di Rovereto",
   "permissions": ["contextMenus", "storage", "activeTab"],
   "background": {
@@ -13,13 +13,13 @@
   "content_scripts": [
   {
     "matches": ["*://*/*"],
-    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*"],
+    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*", "*://rovereto.jentecloud.net/*"],
 		"js": ["parseAllNumbers.js"],
     "runAt": "document_idle"
   },
   {
     "matches": ["*://*/*"],
-    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*"],
+    "exclude_matches": ["*://webmail.comune.rovereto.tn.it/*", "*://rovereto.jentecloud.net/*"],
     "js": ["parseTelCallto.js"],
     "runAt": "document_idle"
   },
