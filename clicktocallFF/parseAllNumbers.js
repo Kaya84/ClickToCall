@@ -1,3 +1,12 @@
+(function () {
+  browser.storage.sync.get({ excludedUrls: [] }, (data) => {
+    const currentUrl = window.location.origin + window.location.pathname;
+    if (data.excludedUrls.includes(currentUrl)) {
+      console.log("Click to Call disattivato su questa pagina.");
+      return;
+    }
+	
+
 const regex = /(\((00|\+)39\)|(00|\+)39)?[\d\+\(][ \d\.\(\)\/\-]{6,15}(?![a-zA-Z])\d\b/g;
 
 
@@ -32,10 +41,12 @@ function replaceInText(text, regex, replace) {
     }
     for (let i = matches.length; i-- > 0; ) {
         match = matches[i];
-        text.splitText(match.index);
-        text.nextSibling.splitText(match[0].length);
-        text.parentNode.replaceChild(replace(match), text.nextSibling);
-
+		//faccio un ulteriore controllo sulla validità del match
+       	if (isValidString(match)){
+			text.splitText(match.index);
+			text.nextSibling.splitText(match[0].length);
+			text.parentNode.replaceChild(replace(match), text.nextSibling);
+		}
     }
 }
 
@@ -48,7 +59,13 @@ function nodeInsertedCallBack(event) {
     replaceInElement(event.target, regex, replaceInElementCallBack);
 }
 
+//funzione di check se nella variabile trovo due volte il carattere / oppure : oppure - oppure . (lo escludo perche sono presumibilmente date e o orari)
+function isValidString(str) {
+    return !(/.*[\/:.\-].*[\/:.\-]/.test(str));
+}
+
 function replaceInElementCallBack(match) {
+	
 	//Verifico se l'utente ha messo il flag a "lavoro agile " nel caso antempongo il 99 al numero chiamante
 	x = match[0].replace(/[\/\-.]/g, '');
 	x= x.replace("0039","");
@@ -60,6 +77,7 @@ function replaceInElementCallBack(match) {
     link.style.textDecoration = 'underline';
     link.appendChild(document.createTextNode(match[0]));
     return link;
+	
 }
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -85,3 +103,8 @@ browser.storage.sync.get(["numeroDiTelefono", "lavoroAgile", "parser"], function
         setTimeout(parsePage, 1000);
     }
 });
+
+
+///////////////////////////////////////////////////
+  });
+})();
