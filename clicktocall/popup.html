@@ -7,6 +7,18 @@
       width: 400px;
       font-family: Arial, sans-serif;
     }
+    .status {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .active {
+      color: green;
+    }
+
+    .inactive {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -18,7 +30,10 @@
   <input type="checkbox" id="telAndCallto" placeholder="Tel: e Callto:" /> Trasforma in url tutti i link nel formato tel/callto<br>
   <input type="checkbox" id="parser" placeholder="Trasforma in link" /> Trasforma in click tutti (quelli che sembrano) numeri telefonici sulla pagina web <br>
   <input type="checkbox" id="modern" placeholder="Zimbra modern" /> Utilizzo il layout Modern di Zimbra<br> 
-  <button id="salvaButton">Salva</button>
+  <button id="salvaButton">Salva</button><hr>
+ <div style='text-align:center'> <button id="toggleStatusButton">Attiva/Disattiva per questa pagina )</button><br>
+  N.B: La pagina viene ricaricata 
+<div id="statusInfo"></div></div>
   <script src="popup.js"></script>
 </body>
 </html>

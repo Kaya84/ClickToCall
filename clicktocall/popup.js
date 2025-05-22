@@ -1,10 +1,14 @@
-// Recupera gli elementi HTML
+﻿// Recupera gli elementi HTML
 const inputNumeroDiTelefono = document.getElementById("numeroDiTelefono");
 const checkboxLavoroAgile = document.getElementById("lavoroAgile");
 const checkboxParser = document.getElementById("parser");
 const checkboxTelAndCallto = document.getElementById("telAndCallto");
 const checkboxmodern = document.getElementById("modern");
 const btnSalva = document.getElementById("salvaButton");
+
+
+const toggleStatusButton = document.getElementById("toggleStatusButton");
+const statusInfo = document.getElementById("statusInfo");
 
 // Carica i valori salvati quando il popup si apre
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,5 +31,55 @@ btnSalva.addEventListener("click", () => {
 
   chrome.storage.sync.set({ numeroDiTelefono, lavoroAgile, parser, telAndCallto, modern }, () => {
     alert("Dati salvati correttamente!");
+  });
+});
+
+function getHostname(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  return a.hostname;
+}
+
+function getFullUrl(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  return a.origin + a.pathname;
+}
+
+// Mostra lo stato attuale della pagina corrente
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  const currentUrl = getFullUrl(tabs[0].url);
+
+  chrome.storage.sync.get({ excludedUrls: [] }, (data) => {
+    const excludedUrls = data.excludedUrls;
+    const isExcluded = excludedUrls.includes(currentUrl);
+
+    statusInfo.textContent = isExcluded
+      ? "Il plugin è DISATTIVATO su questa pagina."
+      : "Il plugin è ATTIVO su questa pagina.";
+
+	if (isExcluded){      
+		statusInfo.classList.remove('active');
+		statusInfo.classList.add('inactive');
+	}else {
+		statusInfo.classList.remove('inactive');
+		statusInfo.classList.add('active');	
+	}
+	  
+    toggleStatusButton.textContent = isExcluded
+      ? "Attiva il plugin per questa pagina"
+      : "Disattiva il plugin per questa pagina";
+
+    toggleStatusButton.onclick = () => {
+      const updatedList = isExcluded
+        ? excludedUrls.filter(url => url !== currentUrl)
+        : [...excludedUrls, currentUrl];
+
+      chrome.storage.sync.set({ excludedUrls: updatedList }, () => {
+        location.reload(); // ricarica il popup per aggiornare stato
+      });
+	      chrome.tabs.reload(tabs[0].id);
+
+    };
   });
 });

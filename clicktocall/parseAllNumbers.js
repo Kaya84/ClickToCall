@@ -1,3 +1,12 @@
+(function () {
+  chrome.storage.sync.get({ excludedUrls: [] }, (data) => {
+    const currentUrl = window.location.origin + window.location.pathname;
+    if (data.excludedUrls.includes(currentUrl)) {
+      console.log("Click to Call disattivato su questa pagina.");
+      return;
+    }
+	
+
 const regex = /(\((00|\+)39\)|(00|\+)39)?[\d\+\(][ \d\.\(\)\/\-]{6,15}(?![a-zA-Z])\d\b/g;
 
 
@@ -50,9 +59,9 @@ function nodeInsertedCallBack(event) {
     replaceInElement(event.target, regex, replaceInElementCallBack);
 }
 
-//funzione di check se nella variabile trovo due volte il carattere / oppure : oppure - lo scludo perche sono presumibilmente date e o orari
+//funzione di check se nella variabile trovo due volte il carattere / oppure : oppure - oppure . (lo escludo perche sono presumibilmente date e o orari)
 function isValidString(str) {
-    return !(/.*[\/:\-].*[\/:\-]/.test(str));
+    return !(/.*[\/:.\-].*[\/:.\-]/.test(str));
 }
 
 function replaceInElementCallBack(match) {
@@ -94,3 +103,8 @@ chrome.storage.sync.get(["numeroDiTelefono", "lavoroAgile", "parser"], function 
         setTimeout(parsePage, 1000);
     }
 });
+
+
+///////////////////////////////////////////////////
+  });
+})();
