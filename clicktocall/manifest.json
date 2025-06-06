@@ -3,7 +3,7 @@
 
   "manifest_version": 3,
   "name": "Click to Call",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "Click to call del Comune di Rovereto",
   "permissions": ["contextMenus", "storage", "activeTab"],
   "background": {

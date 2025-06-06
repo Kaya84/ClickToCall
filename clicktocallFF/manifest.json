@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Click to call",
-  "version": "1.8",
+  "version": "1.81",
   "description": "Menu contestuale per comporre un numero di telefono dinamico",
   "permissions": ["contextMenus", "storage", "notifications", "scripting", "activeTab"],
   "background": {
